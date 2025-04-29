@@ -7,7 +7,10 @@ import Checkbox from "@/components/shared/fields/checkbox.component";
 import Link from "@/components/shared/fields/link.component";
 import { signup } from "@/actions/auth/auth.action";
 import { showToast } from "@/components/shared/toast.component";
-import { ErrorIcon, CheckCircleIcon} from "@/components/shared/icons.component";
+import {
+  ErrorIcon,
+  CheckCircleIcon,
+} from "@/components/shared/icons.component";
 
 type SignupFormValues = {
   email: string;
@@ -89,7 +92,7 @@ const SignupForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setError
+    setError,
   } = useForm<SignupFormValues>({
     defaultValues: {
       email: "",
@@ -109,7 +112,9 @@ const SignupForm = () => {
           Object.keys(response.error).forEach((key) => {
             const numericKey = Number(key);
             if (!isNaN(numericKey)) {
-              const validationError = response.error![numericKey] as ValidationError;
+              const validationError = response.error![
+                numericKey
+              ] as ValidationError;
               setError(validationError.path as keyof SignupFormValues, {
                 type: "manual",
                 message: validationError.msg,
@@ -117,7 +122,7 @@ const SignupForm = () => {
             }
           });
         }
-      }else{
+      } else {
         showToast(
           response.message,
           "success",
