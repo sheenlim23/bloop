@@ -1,10 +1,10 @@
 import AuthCard from "@/components/auth/authCard.component";
-import SigninForm from "@/forms/auth/signin.form";
+import SignupForm from "@/forms/auth/signup.form";
 
 const SignIn = async () => {
   return (
     <AuthCard title="Create an account">
-      <SigninForm />
+      <SignupForm />
     </AuthCard>
   );
 };

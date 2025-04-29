@@ -5,19 +5,20 @@ import { useForm } from "react-hook-form";
 import Input from "@/components/shared/fields/input.component";
 import Checkbox from "@/components/shared/fields/checkbox.component";
 import Link from "@/components/shared/fields/link.component";
-import { signin } from "@/actions/auth/auth.action";
+import { signin, signup } from "@/actions/auth/auth.action";
 import { showToast } from "@/components/shared/toast.component";
-import {
-  ErrorIcon,
-} from "@/components/shared/icons.component";
+import { ErrorIcon } from "@/components/shared/icons.component";
 
-type SigninFormValues = {
+type SignupFormValues = {
   email: string;
   password: string;
+  firstname: string;
+  lastname: string;
+  passwordConfirm: string;
 };
 
 type InputField = {
-  name: keyof SigninFormValues;
+  name: keyof SignupFormValues;
   label: string;
   type: string;
   placeholder: string;
@@ -27,6 +28,24 @@ type InputField = {
 };
 
 const inputFields: InputField[] = [
+  {
+    name: "firstname",
+    label: "First name",
+    type: "text",
+    placeholder: "First name",
+    validation: {
+      required: "First name is required",
+    },
+  },
+  {
+    name: "lastname",
+    label: "Last name",
+    type: "text",
+    placeholder: "Last name",
+    validation: {
+      required: "Last name is required",
+    },
+  },
   {
     name: "email",
     label: "Your email",
@@ -49,46 +68,53 @@ const inputFields: InputField[] = [
       required: "Password is required",
     },
   },
+  {
+    name: "passwordConfirm",
+    label: "Confirm Password",
+    type: "password",
+    placeholder: "••••••••",
+    validation: {
+      required: "Confirm Password is required",
+    },
+  },
 ];
 
-const SigninForm = () => {
+const SignupForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SigninFormValues>({
+  } = useForm<SignupFormValues>({
     defaultValues: {
       email: "",
       password: "",
+      passwordConfirm: "",
+      firstname: "",
+      lastname: "",
     },
   });
 
-  const handleSignin = async (formData: SigninFormValues) => {
+  const handleSignup = async (formData: SignupFormValues) => {
     try {
-      const response = await signin(formData);
-
-      if (!response.success) {
-        showToast(
-          response.message,
-          "danger",
-          5000,
-          <ErrorIcon />,
-          "top-center"
-        );
-        return;
+      const response = await signup(formData);
+      console.log("🚀 ~ handleSignup ~ response:", response);
+      if (response.isError) {
       }
-
-      const { token, user } = response.data;
-      console.log("Welcome back,", user.firstname);
     } catch (error) {
-      console.error("Unexpected error:", error);
+      showToast(
+        "An unexpected error occurred. Please try again.",
+        "danger",
+        5000,
+        <ErrorIcon />,
+        "top-center"
+      );
     }
   };
 
   return (
     <form
       className="space-y-4 md:space-y-6"
-      onSubmit={handleSubmit(handleSignin)}
+      onSubmit={handleSubmit(handleSignup)}
     >
       {inputFields.map((field) => (
         <div key={field.name}>
@@ -132,20 +158,20 @@ const SigninForm = () => {
         type="submit"
         className="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
       >
-        Sign in
+        Sign up
       </button>
 
       <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-        Don’t have an account yet?{" "}
+        Already have an account?{" "}
         <Link
-          href="/signup"
+          href="/signin"
           className="font-medium text-primary-600 hover:underline dark:text-primary-500"
         >
-          Sign up
+          Sign in
         </Link>
       </p>
     </form>
   );
 };
 
-export default SigninForm;
+export default SignupForm;
