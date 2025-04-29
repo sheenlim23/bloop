@@ -5,7 +5,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   error?: React.ReactNode;
 };
 
-const Input: React.FC<InputProps> = ({ label, id, error, type, ...props }) => {
+const Input: React.FC<InputProps> = ({ label, id, error, type, className, ...props }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const isPassword = type === "password";
@@ -25,7 +25,7 @@ const Input: React.FC<InputProps> = ({ label, id, error, type, ...props }) => {
       <input
         id={id}
         type={inputType}
-        className="relative bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 pr-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className={`border rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 focus-visible:outline-1 focus-visible:outline-blue-600 autofill:bg-[transparent] ${className}`}
         {...props}
       />
       {isPassword && (

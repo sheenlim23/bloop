@@ -19,9 +19,7 @@ export async function checkConnection(): Promise<boolean> {
   }
 }
 
-export async function signin(
-  formdata: ISigninPayload
-): Promise<IAuthResponse> {
+export async function signin(formdata: ISigninPayload): Promise<IAuthResponse> {
   try {
     const res = await axios.post<IAuthResponse>(
       `${Config.base_url}${Auth.signin}`,
@@ -33,10 +31,7 @@ export async function signin(
   }
 }
 
-
-export async function signup(
-  formdata: ISignupPayload
-): Promise<IAuthResponse> {
+export async function signup(formdata: ISignupPayload): Promise<IAuthResponse> {
   try {
     const res = await axios.post<IAuthResponse>(
       `${Config.base_url}${Auth.signup}`,
@@ -47,4 +42,3 @@ export async function signup(
     return err.response.data;
   }
 }
-
