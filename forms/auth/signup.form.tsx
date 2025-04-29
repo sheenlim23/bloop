@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import Input from "@/components/shared/fields/input.component";
 import Checkbox from "@/components/shared/fields/checkbox.component";
 import Link from "@/components/shared/fields/link.component";
-import { signin, signup } from "@/actions/auth/auth.action";
+import { signup } from "@/actions/auth/auth.action";
 import { showToast } from "@/components/shared/toast.component";
-import { ErrorIcon } from "@/components/shared/icons.component";
+import { ErrorIcon, CheckCircleIcon} from "@/components/shared/icons.component";
 
 type SignupFormValues = {
   email: string;
@@ -26,6 +26,11 @@ type InputField = {
     [key: string]: any;
   };
 };
+
+interface ValidationError {
+  path: string;
+  msg: string;
+}
 
 const inputFields: InputField[] = [
   {
@@ -84,6 +89,7 @@ const SignupForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError
   } = useForm<SignupFormValues>({
     defaultValues: {
       email: "",
@@ -99,6 +105,26 @@ const SignupForm = () => {
       const response = await signup(formData);
       console.log("🚀 ~ handleSignup ~ response:", response);
       if (response.isError) {
+        if (response.error) {
+          Object.keys(response.error).forEach((key) => {
+            const numericKey = Number(key);
+            if (!isNaN(numericKey)) {
+              const validationError = response.error![numericKey] as ValidationError;
+              setError(validationError.path as keyof SignupFormValues, {
+                type: "manual",
+                message: validationError.msg,
+              });
+            }
+          });
+        }
+      }else{
+        showToast(
+          response.message,
+          "success",
+          5000,
+          <CheckCircleIcon />,
+          "top-center"
+        );
       }
     } catch (error) {
       showToast(

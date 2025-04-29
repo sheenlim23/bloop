@@ -4,9 +4,8 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { Config } from "@/constants/config.constant";
 import { Auth } from "@/enums/auth.enum";
 import {
-  IAuthErrorResponse,
+  IAuthResponse,
   ISigninPayload,
-  IAuthSuccessResponse,
   ISignupPayload,
 } from "@/types/auth/auth.interface";
 
@@ -22,9 +21,9 @@ export async function checkConnection(): Promise<boolean> {
 
 export async function signin(
   formdata: ISigninPayload
-): Promise<IAuthSuccessResponse | IAuthErrorResponse> {
+): Promise<IAuthResponse> {
   try {
-    const res = await axios.post<IAuthSuccessResponse>(
+    const res = await axios.post<IAuthResponse>(
       `${Config.base_url}${Auth.signin}`,
       formdata
     );
@@ -37,28 +36,15 @@ export async function signin(
 
 export async function signup(
   formdata: ISignupPayload
-): Promise<IAuthSuccessResponse | IAuthErrorResponse> {
+): Promise<IAuthResponse> {
   try {
-    const res = await axios.post<IAuthSuccessResponse>(
+    const res = await axios.post<IAuthResponse>(
       `${Config.base_url}${Auth.signup}`,
       formdata
     );
     return res.data;
   } catch (err: any) {
-    const axiosError = err as AxiosError<IAuthErrorResponse>;
-    if (axiosError.response && axiosError.response.data) {
-      const data = axiosError.response.data;
-      if (!data.success) {
-        return data;
-      }
-    }
-
-    return {
-      success: false,
-      message: "An unexpected error occurred.",
-      statusCode: 500,
-      isError: true,
-    } as IAuthErrorResponse;
+    return err.response.data;
   }
 }
 

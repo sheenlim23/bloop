@@ -10,15 +10,23 @@ export interface ISignupPayload {
   lastname: string;
 }
 
-export interface IAuthSuccessResponse {
-  success: true;
+export interface IValidationError {
+  type: string;
+  value: string;
+  msg: string;
+  path: string;
+  location: string;
+}
+
+export interface IAuthResponse {
+  success: boolean; 
   statusCode: number;
   isError: boolean;
   status: string;
   message: string;
-  data: {
-    token: string;
-    user: {
+  data?: {
+    token?: string;
+    user?: {
       _id: string;
       firstname: string;
       lastname: string;
@@ -31,24 +39,9 @@ export interface IAuthSuccessResponse {
       __v: number;
     };
   };
-}
-
-export interface IValidationError {
-  type: string;
-  value: string;
-  msg: string;
-  path: string;
-  location: string;
-}
-
-export interface IAuthErrorResponse {
-  success: false;
-  message: string;
-  statusCode: number;
-  isError: boolean;
-  status?: string;
   error?: {
     [key: number]: IValidationError;
   };
 }
+
 

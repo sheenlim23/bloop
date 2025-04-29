@@ -9,6 +9,7 @@ import { signin } from "@/actions/auth/auth.action";
 import { showToast } from "@/components/shared/toast.component";
 import {
   ErrorIcon,
+  CheckCircleIcon,
 } from "@/components/shared/icons.component";
 
 type SigninFormValues = {
@@ -66,8 +67,9 @@ const SigninForm = () => {
   const handleSignin = async (formData: SigninFormValues) => {
     try {
       const response = await signin(formData);
+      console.log("🚀 ~ handleSignin ~ response:", response);
 
-      if (!response.success) {
+      if (response.isError) {
         showToast(
           response.message,
           "danger",
@@ -76,10 +78,15 @@ const SigninForm = () => {
           "top-center"
         );
         return;
+      } else {
+        showToast(
+          response.message,
+          "success",
+          5000,
+          <CheckCircleIcon />,
+          "top-center"
+        );
       }
-
-      const { token, user } = response.data;
-      console.log("Welcome back,", user.firstname);
     } catch (error) {
       console.error("Unexpected error:", error);
     }
