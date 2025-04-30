@@ -7,6 +7,8 @@ import Checkbox from "@/components/shared/fields/checkbox.component";
 import Link from "@/components/shared/fields/link.component";
 import { signin } from "@/actions/auth/auth.action";
 import { showToast } from "@/components/shared/toast.component";
+import { useAppDispatch } from "@/store/global/hooks";
+import { setAuthState } from "@/store/slice/auth.slice";
 import {
   ErrorIcon,
   CheckCircleIcon,
@@ -53,6 +55,7 @@ const inputFields: InputField[] = [
 ];
 
 const SigninForm = () => {
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -67,8 +70,6 @@ const SigninForm = () => {
   const handleSignin = async (formData: SigninFormValues) => {
     try {
       const response = await signin(formData);
-      console.log("🚀 ~ handleSignin ~ response:", response);
-
       if (response.isError) {
         showToast(
           response.message,
@@ -79,6 +80,7 @@ const SigninForm = () => {
         );
         return;
       } else {
+        dispatch(setAuthState(response.data));
         showToast(
           response.message,
           "success",

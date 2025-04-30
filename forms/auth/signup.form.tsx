@@ -2,6 +2,8 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useAppDispatch } from "../../store/global/hooks";
+import { setAuthState } from "../../store/slice/auth.slice";
 import Input from "@/components/shared/fields/input.component";
 import Checkbox from "@/components/shared/fields/checkbox.component";
 import Link from "@/components/shared/fields/link.component";
@@ -88,6 +90,7 @@ const inputFields: InputField[] = [
 ];
 
 const SignupForm = () => {
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -106,7 +109,6 @@ const SignupForm = () => {
   const handleSignup = async (formData: SignupFormValues) => {
     try {
       const response = await signup(formData);
-      console.log("🚀 ~ handleSignup ~ response:", response);
       if (response.isError) {
         if (response.error) {
           Object.keys(response.error).forEach((key) => {
@@ -123,6 +125,7 @@ const SignupForm = () => {
           });
         }
       } else {
+        dispatch(setAuthState(response.data));
         showToast(
           response.message,
           "success",
