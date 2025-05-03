@@ -13,6 +13,7 @@ import {
   ErrorIcon,
   CheckCircleIcon,
 } from "@/components/shared/icons.component";
+import { setCookie } from "@/services/cookies.services";
 
 type SigninFormValues = {
   email: string;
@@ -80,6 +81,7 @@ const SigninForm = () => {
         );
         return;
       } else {
+        setCookie("isAuthenticated", "true");
         dispatch(setAuthState(response.data));
         showToast(
           response.message,
