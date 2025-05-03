@@ -1,6 +1,6 @@
 "use server";
 
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios from "axios";
 import { Config } from "@/constants/config.constant";
 import { Auth } from "@/enums/auth.enum";
 import {
@@ -8,6 +8,7 @@ import {
   ISigninPayload,
   ISignupPayload,
 } from "@/types/auth/auth.interface";
+import api from "@/services/axios.services";
 
 export async function checkConnection(): Promise<boolean> {
   try {
@@ -21,10 +22,9 @@ export async function checkConnection(): Promise<boolean> {
 
 export async function signin(formdata: ISigninPayload): Promise<IAuthResponse> {
   try {
-    const res = await axios.post<IAuthResponse>(
-      `${Config.base_url}${Auth.signin}`,
-      formdata
-    );
+    const res = await api.post<IAuthResponse>(Auth.signin, formdata,{
+      withCredentials: true,
+    });
     return res.data;
   } catch (err: any) {
     return err.response.data;
@@ -33,10 +33,7 @@ export async function signin(formdata: ISigninPayload): Promise<IAuthResponse> {
 
 export async function signup(formdata: ISignupPayload): Promise<IAuthResponse> {
   try {
-    const res = await axios.post<IAuthResponse>(
-      `${Config.base_url}${Auth.signup}`,
-      formdata
-    );
+    const res = await api.post<IAuthResponse>(Auth.signup, formdata);
     return res.data;
   } catch (err: any) {
     return err.response.data;
