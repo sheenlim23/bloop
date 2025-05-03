@@ -1,6 +1,5 @@
 import { Config } from '@/constants/config.constant';
 import axios from 'axios';
-import { headers } from 'next/headers'
 
 const api = axios.create({
   baseURL: Config.api_base_url,
@@ -10,7 +9,6 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     config.headers['Origin'] = Config.base_url;
-
     return config;
   },
   (error) => {
