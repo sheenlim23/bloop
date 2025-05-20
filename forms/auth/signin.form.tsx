@@ -14,6 +14,7 @@ import {
   CheckCircleIcon,
 } from "@/components/shared/icons.component";
 import { setCookie } from "@/services/cookies.services";
+import { useRouter } from 'next/navigation';
 
 type SigninFormValues = {
   email: string;
@@ -57,6 +58,8 @@ const inputFields: InputField[] = [
 
 const SigninForm = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -90,6 +93,7 @@ const SigninForm = () => {
           <CheckCircleIcon />,
           "top-center"
         );
+        router.push('/');
       }
     } catch (error) {
       console.error("Unexpected error:", error);
