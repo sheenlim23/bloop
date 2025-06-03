@@ -42,7 +42,7 @@ const positionStyles: Record<ToastPosition, string> = {
 function ToastComponent({
   message,
   type = "danger",
-  duration = 3000,
+  duration = 2000,
   onClose,
   icon,
   position = "bottom-right",
@@ -62,7 +62,7 @@ function ToastComponent({
   return (
     <div
       className={clsx(
-        "fixed z-50 flex items-center w-full max-w-xs p-4 rounded-lg shadow-sm text-gray-400 bg-gray-800",
+        "fixed z-[999999999] flex items-center w-full max-w-xs p-4 rounded-lg shadow-sm text-gray-400 bg-gray-800",
         positionStyles[position]
       )}
       role="alert"

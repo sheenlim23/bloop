@@ -6,8 +6,8 @@ import { NavList } from "@/constants/navItems.constant";
 
 const Navbar: FC = () => {
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <nav className="bg-white border-gray-200 dark:bg-gray-900 fixed w-full z-50">
+      <div className="flex flex-wrap items-center justify-between mx-auto p-4">
         <NavbarLogo />
         <NavbarMobileButton />
         <NavbarList items={NavList} />

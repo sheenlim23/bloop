@@ -1,9 +1,8 @@
-// app/signin/layout.tsx
 import React from "react";
-import AuthLayout from "@/components/auth/authLayout.component";
+import LayoutContent from "@/components/layout/LayoutContent";
 
 const SignInLayout = ({ children }: { children: React.ReactNode }) => (
-  <AuthLayout>{children}</AuthLayout>
+  <LayoutContent>{children}</LayoutContent>
 );
 
 export default SignInLayout;
